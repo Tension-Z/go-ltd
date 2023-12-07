@@ -12,12 +12,12 @@ func calculateLinearRegressionCoefficients(points []Point) (float64, float64) {
 	aNumerator := 0.0
 	aDenominator := 0.0
 	for i := 0; i < len(points); i++ {
-		aNumerator += (points[i].Timestamp - average.Timestamp) * (points[i].Value - average.Value)
-		aDenominator += (points[i].Value - average.Value) * (points[i].Timestamp - average.Timestamp)
+		aNumerator += float64(points[i].Timestamp-average.Timestamp) * (points[i].Value - average.Value)
+		aDenominator += (points[i].Value - average.Value) * float64(points[i].Timestamp-average.Timestamp)
 	}
 
 	a := aNumerator / aDenominator
-	b := average.Value - a*average.Timestamp
+	b := average.Value - a*float64(average.Timestamp)
 	return a, b
 }
 
@@ -26,7 +26,7 @@ func calculateSSEForBucket(points []Point) float64 {
 	a, b := calculateLinearRegressionCoefficients(points)
 	sumStandardErrorsSquared := 0.0
 	for _, p := range points {
-		standardError := p.Value - (a*p.Timestamp + b)
+		standardError := p.Value - (a*float64(p.Timestamp) + b)
 		sumStandardErrorsSquared += standardError * standardError
 	}
 	return sumStandardErrorsSquared

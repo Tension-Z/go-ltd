@@ -6,7 +6,7 @@ import (
 
 // 计算三角形面积
 func calculateTriangleArea(pa, pb, pc Point) float64 {
-	area := ((pa.Timestamp-pc.Timestamp)*(pb.Value-pa.Value) - (pa.Timestamp-pb.Timestamp)*(pc.Value-pa.Value)) * 0.5
+	area := (float64(pa.Timestamp-pc.Timestamp)*(pb.Value-pa.Value) - float64(pa.Timestamp-pb.Timestamp)*(pc.Value-pa.Value)) * 0.5
 	return math.Abs(area)
 }
 
@@ -16,9 +16,9 @@ func calculateAverageDataPoint(points []Point) (avg Point) {
 		avg.Timestamp += point.Timestamp
 		avg.Value += point.Value
 	}
-	l := float64(len(points))
-	avg.Timestamp /= l
-	avg.Value /= l
+	l := len(points)
+	avg.Timestamp /= uint64(l)
+	avg.Value /= float64(l)
 	return avg
 }
 
@@ -59,7 +59,7 @@ func calculateAveragePoint(points []Point) Point {
 		p.Value += points[i].Value
 	}
 
-	p.Timestamp /= float64(l)
+	p.Timestamp /= uint64(l)
 	p.Value /= float64(l)
 	return p
 
